@@ -7,20 +7,20 @@ $.getJSON("https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/m
     genres = [];
 
     movieData.forEach(movie => {
-        movie.cast.forEach(castMember =>{
-            if(thisActor = actors.find(actor => actor.Name==castMember)){
-                thisActor.Movies.push(movie.title);
+        movie.cast.forEach(cast =>{
+            if(actor = actors.find(actor => actor.Name==cast)){
+                actor.Movies.push(movie.title);
             }
             else{
                 actors.push({
-                    Name: castMember,
+                    Name: cast,
                     Movies: [ movie.title ]
                 })
               }
             });
             movie.genres.forEach(genreType =>{
-                if(thisGenre = genres.find(genre => genre.Type==genreType)){
-                    thisGenre.Movies.push(movie.title);
+                if(genre = genres.find(genre => genre.Type==genreType)){
+                    genre.Movies.push(movie.title);
                 }
                 else{
                     genres.push({
