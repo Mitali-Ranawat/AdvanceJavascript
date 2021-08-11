@@ -1,4 +1,3 @@
-console.log('Question 2')
 
 const githubAPI = () => {
     console.log("Question 2")
@@ -25,14 +24,14 @@ const getInfo = async (data) => {
             login: item.owner.login
         };
         try{
-            let res = await fetch(item.owner.url);
+            let res = await fetch(item.owner.url).then(response => response.json());
             owner.name = res.name;
         }catch{
             owner.name = "";
             continue;
         }
         try{
-            res = await fetch(item.owner.followers_url);
+            res = await $.get(item.owner.followers_url);
             owner.followersCount = res.length;
         }
         catch{
@@ -40,7 +39,7 @@ const getInfo = async (data) => {
             continue;
         }
         try{
-            res = await fetch(item.owner.following_url.split("{")[0]);
+            res = await $.get(item.owner.following_url.split("{")[0]);
             owner.followingCount = res.length;
         }
         catch{
@@ -49,7 +48,7 @@ const getInfo = async (data) => {
         }
         let numberOfBranch;
         try{
-            res = await fetch(item.branches_url.split("{")[0]);
+            res = await $.get(item.branches_url.split("{")[0]);
             numberOfBranch = res.length;
         }
         catch{
