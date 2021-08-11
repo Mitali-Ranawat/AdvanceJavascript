@@ -56,7 +56,7 @@ const getInfo = async (data) => {
         let numberOfBranch;
         try{
             url = item.branches_url.split("{")[0];
-            await fetch(mainurl).then(res => res.json()).then((data) => {
+            await fetch(url).then(res => res.json()).then((data) => {
                 numberOfBranch= data.length;
         });
         }
