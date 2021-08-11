@@ -24,7 +24,7 @@ const getInfo = async (data) => {
             login: item.owner.login
         };
         try{
-            let res = await fetch(item.owner.url).then(response => response.json());
+            let res = await $.get(item.owner.url);
             owner.name = res.name;
         }catch{
             owner.name = "";
