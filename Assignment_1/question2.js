@@ -5,7 +5,7 @@ const githubAPI = () => {
     query = $("#github").val();
     const url = "https://api.github.com/search/repositories?q="    
     let result = [];
-    $.get(url+query)
+    fetch(url+query).then(res => res.json())
     .then((data)=>{
         getInfo(data)
         .then(result => {
@@ -24,23 +24,30 @@ const getInfo = async (data) => {
             login: item.owner.login
         };
         try{
-            let res = await $.get(item.owner.url);
-            owner.name = res.name;
+            await fetch(item.owner.url).then(res => res.json()).then((data) => {
+               owner.name = data.name;
+            });
+            
         }catch{
             owner.name = "";
             continue;
         }
         try{
-            res = await $.get(item.owner.followers_url);
-            owner.followersCount = res.length;
+
+            await fetch(item.owner.followers_url).then(res => res.json()).then((data)=> {
+                       owner.followersCount = data.length;
+            });
         }
+         
         catch{
             owner.followersCount = 0;
             continue;
         }
         try{
-            res = await $.get(item.owner.following_url.split("{")[0]);
-            owner.followingCount = res.length;
+            url = item.owner.following_url.split("{")[0];
+            await fetch(url).then(res => res.json()).then((data) => {
+                owner.followingCount = data.length;
+            });
         }
         catch{
             owner.followingCount = 0;
@@ -48,8 +55,10 @@ const getInfo = async (data) => {
         }
         let numberOfBranch;
         try{
-            res = await $.get(item.branches_url.split("{")[0]);
-            numberOfBranch = res.length;
+            url = item.branches_url.split("{")[0];
+            await fetch(mainurl).then(res => res.json()).then((data) => {
+                numberOfBranch= data.length;
+        });
         }
         catch{
             numberOfBranch = 0;
@@ -66,5 +75,6 @@ const getInfo = async (data) => {
             numberOfBranch: numberOfBranch
         }); 
     };
+    
     return resultArray;
 }
